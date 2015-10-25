@@ -1,5 +1,9 @@
 ![AsyncAll](https://github.com/SchwabenCode/AsyncAll/blob/master/meme.JPG)
 # Async All
+**by [SchwabenCode.com](http://www.schwabencode.com) - Benjamin Abt**
+
+[![License](https://img.shields.io/github/license/SchwabenCode/AsyncAll.svg?label=License&style=flat-square)](https://www.nuget.org/packages/AsyncAll/) 
+[![NuGet Downloads](https://img.shields.io/nuget/dt/AsyncAll.svg?label=NuGet%20Downloads&style=flat-square)](https://www.nuget.org/packages/AsyncAll/) [![NuGet Version](https://img.shields.io/nuget/v/AsyncAll.svg?label=NuGet%20Release&style=flat-square)](https://www.nuget.org/packages/AsyncAll/) [![NuGet PreVersion](https://img.shields.io/nuget/vpre/AsyncAll.svg?label=NuGet%20Pre-Version&style=flat-square)](https://www.nuget.org/packages/AsyncAll/) ![GitHub Release](https://img.shields.io/github/release/SchwabenCode/AsyncAll.svg?label=GitHub%20Release&style=flat-square) ![GitHub Issues](https://img.shields.io/github/issues/SchwabenCode/AsyncAll.svg?label=Open%20Issues&style=flat-square)
 
 **With AsyncAll you can perform asynchronous operations even the function is synchronous**
 **Fully combinable with Tasks and .NET 4.5 async/await-pattern.**
