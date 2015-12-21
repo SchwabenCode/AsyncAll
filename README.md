@@ -1,4 +1,4 @@
-![AsyncAll](_content/asyncall.logo.JPG)
+![AsyncAll](_content/asyncall.logo.jpg)
 # Async All ![License](https://img.shields.io/github/license/SchwabenCode/AsyncAll.png?style=flat-square)
 **by [SchwabenCode.com](http://www.schwabencode.com) - Benjamin Abt**
 
