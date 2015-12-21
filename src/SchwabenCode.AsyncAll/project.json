@@ -1,0 +1,27 @@
+﻿{
+  "version": "0.0.0-ci-replace",
+  "description": "Call everything async",
+  "authors": [ "SCHWABENCODE", "BenjaminAbt" ],
+  "owners": [ "SCHWABENCODE", "BenjaminAbt" ],
+  "tags": [ "Async, AsyncAll, SchwabenCode, BenjaminAbt" ],
+  "projectUrl": "https://github.com/SchwabenCode/AsyncAll",
+  "licenseUrl": "https://github.com/SchwabenCode/AsyncAll/LICENSE.md",
+
+  "dependencies": {
+    "System.Collections": "4.0.0",
+    "System.Linq": "4.0.0",
+    "System.Runtime": "4.0.0",
+    "Microsoft.CSharp": "4.0.0",
+    "System.Diagnostics.Contracts": "4.0.0"
+  },
+
+  "frameworks": {
+    "net45": { },
+    "net451": { },
+    "net452": { },
+    "net46": { },
+    "net461": { },
+
+    "dnx451": { }
+  }
+}

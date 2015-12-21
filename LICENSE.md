@@ -1,6 +1,6 @@
-The MIT License (MIT)
+## The MIT License
 
-Copyright (c) 2015 SchwabenCode(www.schwabencode.com) - by Benjamin Abt(www.benjamin-abt.com)
+#### Copyright (c) 2015 Benjamin Abt / SCHWABENCODE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
