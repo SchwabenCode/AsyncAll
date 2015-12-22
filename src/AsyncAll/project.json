@@ -11,16 +11,12 @@
     "System.Collections": "4.0.0",
     "System.Linq": "4.0.0",
     "System.Runtime": "4.0.0",
+    "System.Threading.Tasks": "4.0.0",
     "Microsoft.CSharp": "4.0.0",
     "System.Diagnostics.Contracts": "4.0.0"
   },
 
   "frameworks": {
-    "net45": { },
-    "net451": { },
-    "net452": { },
-    "net46": { },
-    "net461": { },
 
     "dnx451": { }
   }
