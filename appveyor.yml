@@ -59,7 +59,7 @@ build_script:
 # test with defined configuration
 test_script:
  - ps: Write-Host "TESTING configuration $env:configuration"
- - cmd: dnx -p src\FlexMapper.AsyncAll test"
+ - cmd: dnx -p src\AsyncAll.UnitTests test"
  
 #-------------------------------------------------#
 #           DEPLOY CONFIGURATION                  #
