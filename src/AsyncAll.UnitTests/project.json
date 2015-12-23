@@ -1,0 +1,30 @@
+﻿{
+  "version": "0.0.0-ci-replace",
+  "description": "Test project for SchwabenCode.AsyncAll",
+  "authors": [ "SCHWABENCODE", "BenjaminAbt" ],
+  "owners": [ "SCHWABENCODE", "BenjaminAbt" ],
+  "tags": [ "Async, AsyncAll, SchwabenCode, BenjaminAbt" ],
+  "projectUrl": "https://github.com/SchwabenCode/AsyncAll",
+  "licenseUrl": "https://github.com/SchwabenCode/AsyncAll/LICENSE.md",
+
+  "dependencies": {
+    "System.Collections": "4.0.0",
+    "System.Linq": "4.0.0",
+    "System.Runtime": "4.0.0",
+    "System.Threading.Tasks": "4.0.0",
+    "Microsoft.CSharp": "4.0.0",
+    "System.Diagnostics.Contracts": "4.0.0",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "FluentAssertions": "4.1.1",
+    "AsyncAll": "0.0.0-ci-replace"
+  },
+
+  "frameworks": {
+    "dnx451": {}
+  },
+
+  "commands": {
+    "test": "xunit.runner.dnx"
+  }
+}

@@ -17,7 +17,7 @@ namespace SchwabenCode.AsyncAll
         private static bool _currentThreadIsProcessingItems;
 
         // The list of tasks to be executed  
-        private readonly LinkedList<Task> _tasks = new LinkedList<Task>( ); // protected by lock(_tasks) 
+        private readonly LinkedList<Task> _tasks = new LinkedList<Task>(); // protected by lock(_tasks) 
 
         // The maximum concurrency level allowed by this scheduler.  
         private readonly int _maxDegreeOfParallelism;
@@ -28,7 +28,10 @@ namespace SchwabenCode.AsyncAll
         // Creates a new instance with the specified degree of parallelism.  
         public LimitedConcurrencyLevelTaskScheduler( int maxDegreeOfParallelism )
         {
-            if ( maxDegreeOfParallelism < 1 ) throw new ArgumentOutOfRangeException( "maxDegreeOfParallelism" );
+            if( maxDegreeOfParallelism < 1 )
+            {
+                throw new ArgumentOutOfRangeException( nameof( maxDegreeOfParallelism ) );
+            }
             _maxDegreeOfParallelism = maxDegreeOfParallelism;
         }
 
@@ -40,16 +43,18 @@ namespace SchwabenCode.AsyncAll
             lock ( _tasks )
             {
                 _tasks.AddLast( task );
-                if ( _delegatesQueuedOrRunning < _maxDegreeOfParallelism )
+                if( _delegatesQueuedOrRunning >= _maxDegreeOfParallelism )
                 {
-                    ++_delegatesQueuedOrRunning;
-                    NotifyThreadPoolOfPendingWork( );
+                    return;
                 }
+
+                ++_delegatesQueuedOrRunning;
+                NotifyThreadPoolOfPendingWork();
             }
         }
 
         // Inform the ThreadPool that there's work to be executed for this scheduler.  
-        private void NotifyThreadPoolOfPendingWork( )
+        private void NotifyThreadPoolOfPendingWork()
         {
             ThreadPool.UnsafeQueueUserWorkItem( _ =>
             {
@@ -59,14 +64,14 @@ namespace SchwabenCode.AsyncAll
                 try
                 {
                     // Process all available items in the queue. 
-                    while ( true )
+                    while( true )
                     {
                         Task item;
                         lock ( _tasks )
                         {
                             // When there are no more items to be processed, 
                             // note that we're done processing, and get out. 
-                            if ( _tasks.Count == 0 )
+                            if( _tasks.Count == 0 )
                             {
                                 --_delegatesQueuedOrRunning;
                                 break;
@@ -74,15 +79,19 @@ namespace SchwabenCode.AsyncAll
 
                             // Get the next item from the queue
                             item = _tasks.First.Value;
-                            _tasks.RemoveFirst( );
+                            _tasks.RemoveFirst();
                         }
 
                         // Execute the task we pulled out of the queue 
                         base.TryExecuteTask( item );
                     }
                 }
-                    // We're done processing items on the current thread 
-                finally { _currentThreadIsProcessingItems = false; }
+                // We're done processing items on the current thread 
+                finally
+                {
+                    _currentThreadIsProcessingItems = false;
+
+                }
             }, null );
         }
 
@@ -90,41 +99,55 @@ namespace SchwabenCode.AsyncAll
         protected sealed override bool TryExecuteTaskInline( Task task, bool taskWasPreviouslyQueued )
         {
             // If this thread isn't already processing a task, we don't support inlining 
-            if ( !_currentThreadIsProcessingItems ) return false;
+            if( !_currentThreadIsProcessingItems )
+            {
+                return false;
+            }
 
             // If the task was previously queued, remove it from the queue 
-            if ( taskWasPreviouslyQueued )
+            if( taskWasPreviouslyQueued )
+            {
                 // Try to run the task.  
-                if ( TryDequeue( task ) )
-                    return base.TryExecuteTask( task );
-                else
-                    return false;
-            else
-                return base.TryExecuteTask( task );
+                return TryDequeue( task ) && base.TryExecuteTask( task );
+            }
+
+            return base.TryExecuteTask( task );
         }
 
         // Attempt to remove a previously scheduled task from the scheduler.  
         protected sealed override bool TryDequeue( Task task )
         {
-            lock ( _tasks ) return _tasks.Remove( task );
+            lock ( _tasks )
+            {
+                return _tasks.Remove( task );
+            }
         }
 
         // Gets the maximum concurrency level supported by this scheduler.  
-        public sealed override int MaximumConcurrencyLevel { get { return _maxDegreeOfParallelism; } }
+        public sealed override int MaximumConcurrencyLevel => _maxDegreeOfParallelism;
 
         // Gets an enumerable of the tasks currently scheduled on this scheduler.  
-        protected sealed override IEnumerable<Task> GetScheduledTasks( )
+        protected sealed override IEnumerable<Task> GetScheduledTasks()
         {
             bool lockTaken = false;
             try
             {
                 Monitor.TryEnter( _tasks, ref lockTaken );
-                if ( lockTaken ) return _tasks;
-                else throw new NotSupportedException( );
+                if( lockTaken )
+                {
+                    return _tasks;
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
             }
             finally
             {
-                if ( lockTaken ) Monitor.Exit( _tasks );
+                if( lockTaken )
+                {
+                    Monitor.Exit( _tasks );
+                }
             }
         }
     }

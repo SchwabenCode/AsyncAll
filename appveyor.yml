@@ -1,17 +1,28 @@
 #-------------------------------------------------#
 #           GENERAL                               #
 #-------------------------------------------------#
-version: 1.1.{build}-develop
+version: 1.1.0
+configuration: Release
+
+branches:
+ only:
+  - master
+  - develop
   
 #-------------------------------------------------#
 #           ENVIRONMENT                           #
 #-------------------------------------------------#
 os: Visual Studio 2015
 environment:
+ # this patch key will be repaced by the before_build event and it's script
+ # only version-pattern here allowed.
  versionPatchKey: '0.0.0-ci-replace'
- dnvmDownloadUrl: 'https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.ps1'
  dnvmVersion: '1.0.0-rc1-final'
- 
+ artifactsPath: 'artifacts\build'
+ # string secured by individual appveyor account
+ nugetKey:
+    secure: s1wmKGbLWJgtNFbeih5ARl8RYSopkcPhKzAuoViFK2QcpD+fDrb2W3NUBGBNP72Q
+    
 #-------------------------------------------------#
 #           INIT                                  #
 #-------------------------------------------------#
@@ -30,29 +41,26 @@ install:
 #           BUILD CONFIGURATION                   #
 #-------------------------------------------------#
 
+# patch project.json files and install DNVM
 before_build:
- - ps: Write-Host "PATCHING project.json $env:versionPatchKey to $env:appveyor_build_version"
- - ps: (Get-Content src\SchwabenCode.AsyncAll\project.json).replace($env:versionPatchKey, $env:appveyor_build_version) | Set-Content src\SchwabenCode.AsyncAll\project.json
- - ps: "&{$Branch='dev';iex ((new-object net.webclient).DownloadString($env:dnvmDownloadUrl))}"
- - cmd: dnvm install $env:dnvmVersion
- - cmd: dnvm upgrade
- - cmd: dnvm update-self
- - cmd: dnvm list
- - cmd: dnvm use $env:dnvmVersion
- - cmd: dnu restore
+ - ps: .\appveyor.prebuild.version.ps1
+ - ps: .\appveyor.prebuild.patch-projectjson.ps1 "src\AsyncAll" "src\AsyncAll.UnitTests" -version $env:APPVEYOR_BUILD_VERSION -placeholder $env:versionPatchKey
+ - ps: .\appveyor.install.dnvm.ps1
 
 
+# build main project with defined configuration
 build_script:
- - cmd: dnu build src\SchwabenCode.AsyncAll
-
+ - ps: .\appveyor.build.ps1 "src\AsyncAll" "src\AsyncAll.UnitTests" -configuration $env:CONFIGURATION
+  
 #-------------------------------------------------#
-#           BRANCH CONFIGURATION                  #
+#           TEST CONFIGURATION                    #
 #-------------------------------------------------#
 
-# configuration for "master" branch
-# build in Release mode and deploy to Azure
-branches:
- only:
-  - develop
-
-configuration: Release
+# test with defined configuration
+test_script:
+ - ps: Write-Host "TESTING configuration $env:configuration"
+ - cmd: dnx -p src\AsyncAll.UnitTests test"
+ 
+#-------------------------------------------------#
+#           DEPLOY CONFIGURATION                  #
+#-------------------------------------------------#
