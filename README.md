@@ -18,8 +18,6 @@ Checkout the official Page [http://schwabencode.com/projects/AsyncAll](http://sc
 
 If you like the library and saved you time, then maybe respect this with a small donation to the [animal shelter of Stuttgart](http://www.tierheim-stuttgart.de/).
 
-If you want to thank me personally, take a look at [my personal Amazon wishlist](http://www.amazon.de/gp/registry/wishlist/H6KLKT7UMI7Z/).
-
 It would be also very nice when you just write me, if you like this implementation and tell me what you've started!
 
 ## License
